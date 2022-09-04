@@ -29,7 +29,7 @@ Para ejecutar ansible es necesario conexion via ssh:
 
 	*Nodo bastión:
 		- Genera tu propia clave en el servidor ssh-keygen (enter x3)
-		- Generar una copia ssh-copy-id de cada cliente contra el que se vaya a lanzar un escaner con el usuario ubuntu, ya que se cumple el 			  uso de minimos privilegios  --> ssh-copy-id ubuntu@<ip>
+		- Generar una copia ssh-copy-id de cada cliente contra el que se vaya a lanzar un escaner con el usuario ubuntu, ya que se cumple el uso de minimos privilegios  --> ssh-copy-id ubuntu@<ip>
 	*Nodo cliente:
 		- En el cliente es necesario permitir el uso de ssh con root, sshd_config  --> /etc/ssh/sshd_config PermitRootLogin yes
 
