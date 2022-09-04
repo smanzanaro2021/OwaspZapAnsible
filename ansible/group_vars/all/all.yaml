@@ -11,14 +11,25 @@ reports_location: /zapdata/
 owasp_zap_image_name: owasp/zap2docker-weekly
 FullScan: owasp-zap-full-scan-
 BaseScan: owasp-zap-base-line-scan-
-
+ApiScan: owasp-zap-api-scan-
 
 
 #WEB SITES DICTIONARY
 webSiteContainers:
-  192.168.1.89:
-    name: dvws 
-    ipNode: 192.168.1.89
-    image_name: cyrivs89/web-dvws 
-    ports: 
+  192.168.1.82:
+    api_type: openapi
+    name: dvws
+    ipNode: 192.168.1.82
+    image_name: cyrivs89/web-dvws
+    ports:
       - "80:80"
+  192.168.1.83:
+    api_type: openapi
+    name: dvws
+    ipNode: 192.168.1.83
+    image_name: cyrivs89/web-dvws
+    ports:
+      - "80:80"
+
+
+# api_type: values --> soap or openapi 

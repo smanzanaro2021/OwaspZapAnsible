@@ -1,0 +1,15 @@
+- name: Running owasp zap api scan container against  http://{{ host }}
+  docker_container:
+    name: "{{ ApiScan }}{{ host }}"
+    image: "{{ owasp_zap_image_name }}"
+    interactive: yes
+    state: started
+    volumes: "{{ reports_location }}:/zap/wrk:rw"
+    command: "zap-api-scan.py -t  http://{{ host }} -f {{ webSiteContainers[host]['api_type'] }} -r {{ ApiScan }}{{ host }}_report.html"
+
+- name: Getting raw output of the scan
+  raw: "docker logs -f {{ ApiScan }}{{ host }}"
+  register: scan_output
+
+- debug:
+    msg: "{{ scan_output }}"

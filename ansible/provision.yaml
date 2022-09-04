@@ -20,7 +20,6 @@
       include_role:
         name: containers/runOwaspZapContainer
 
-
       
 
 - name: Setting up Web Site containers
@@ -29,7 +28,7 @@
   gather_facts: yes
   become: yes
   tasks:
-   
+
     
     - name: Installing Docker in {{ hostvars[inventory_hostname].inventory_hostname }} 
       include_role:
@@ -71,35 +70,18 @@
       with_items: "{{ groups['webSites_group'] }}"
 
 
+- name: Running OWASP ZAP API Scan
+  hosts: localhost
+  remote_user: "{{ remote_user_name }}"
+  gather_facts: no
+  become: yes
+  tasks:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    - name: Running api scan
+      include_role:
+        name: containers/runOwaspApiScan
+      vars:
+        host: "{{ item }}"
+      with_items: "{{ groups['webSites_group'] }}"
 
 
