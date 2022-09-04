@@ -1,0 +1,105 @@
+- name: Execute OWASP ZAP
+  hosts: localhost
+  remote_user: "{{ remote_user_name }}"
+  gather_facts: no
+  become: yes
+  tasks:
+
+
+    - name: Installing Docker 
+      include_role:
+        name: installDocker
+
+    - debug:
+        msg: 
+          - "OWASP ZAP Docker container setup (needed ansible 2.1+)"
+          - "Ansible version: {{ ansible_version.full }}"
+          - "Ansible python_interpreter: {{ ansible_python_interpreter }}"
+
+    - name: Running {{owasp_zap_image_name }} container
+      include_role:
+        name: containers/runOwaspZapContainer
+
+
+      
+
+- name: Setting up Web Site containers
+  hosts: webSites_group
+  remote_user: "{{ remote_user_name }}"
+  gather_facts: yes
+  become: yes
+  tasks:
+   
+    
+    - name: Installing Docker in {{ hostvars[inventory_hostname].inventory_hostname }} 
+      include_role:
+        name: installDocker
+
+    - name: Deploy existing containers in each remote hosts {{ hostvars[inventory_hostname].inventory_hostname }}
+      include_role:
+        name: containers/runWebSiteContainer
+
+
+
+- name: Running OWASP ZAP Baseline Scan
+  hosts: localhost
+  remote_user: "{{ remote_user_name }}"
+  gather_facts: no
+  become: yes
+  tasks:
+
+    - name: Running baseline scan
+      include_role:
+        name: containers/runOwaspZapBaselineScan
+      vars: 
+        host: "{{ item }}"
+      with_items: "{{ groups['webSites_group'] }}"
+
+
+- name: Running OWASP ZAP Full Scan
+  hosts: localhost
+  remote_user: "{{ remote_user_name }}"
+  gather_facts: no
+  become: yes
+  tasks:
+
+    - name: Running full scan
+      include_role:
+        name: containers/runOwaspZapFullScan
+      vars:
+        host: "{{ item }}"
+      with_items: "{{ groups['webSites_group'] }}"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

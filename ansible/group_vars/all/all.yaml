@@ -1,0 +1,24 @@
+
+#ENVIRONMENT VARIABLES
+ansible_python_interpreter: "/usr/bin/python3"
+remote_user_name: "ubuntu"
+apt_repo_data: "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
+apt_gpg_key: "https://download.docker.com/linux/ubuntu/gpg"
+
+
+#ZAP VARIABLES
+reports_location: /zapdata/
+owasp_zap_image_name: owasp/zap2docker-weekly
+FullScan: owasp-zap-full-scan-
+BaseScan: owasp-zap-base-line-scan-
+
+
+
+#WEB SITES DICTIONARY
+webSiteContainers:
+  192.168.1.89:
+    name: dvws 
+    ipNode: 192.168.1.89
+    image_name: cyrivs89/web-dvws 
+    ports: 
+      - "80:80"

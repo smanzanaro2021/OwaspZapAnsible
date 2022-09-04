@@ -1,0 +1,15 @@
+- name: Running owasp zap full scan container against  http://{{ host }}
+  docker_container:
+    name: "{{ FullScan }}{{ host }}"
+    image: "{{ owasp_zap_image_name }}"
+    interactive: yes
+    state: started
+    volumes: "{{ reports_location }}:/zap/wrk:rw"
+    command: "zap-full-scan.py -t  http://{{ host }} -r {{ FullScan }}{{ host }}_report.html"
+
+- name: Getting raw output of the scan
+  raw: "docker logs -f {{ FullScan }}{{ host }}"
+  register: scan_output
+
+- debug:
+    msg: "{{ scan_output }}"

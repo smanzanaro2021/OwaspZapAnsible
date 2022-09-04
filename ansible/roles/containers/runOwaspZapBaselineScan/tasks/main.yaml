@@ -1,0 +1,16 @@
+- name: Running owasp zap baseline scan container against http://{{ host }}
+  docker_container:
+    name: "{{ BaseScan }}{{ host }}" 
+    image: "{{ owasp_zap_image_name }}"
+    interactive: yes 
+    state: started
+    volumes: "{{ reports_location }}:/zap/wrk:rw"
+    command: "zap-baseline.py -t http://{{ host }} -r {{ BaseScan }}{{ host }}_report.html"
+
+- name: Getting raw output of the scan
+  command: "docker logs -f {{ BaseScan }}{{ host }}"
+  register: scan_output
+
+- debug:
+    msg: "{{ scan_output }}"
+

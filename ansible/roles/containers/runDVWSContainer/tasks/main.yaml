@@ -1,0 +1,17 @@
+- name: Deploy container
+  block:
+
+  - name: Deploying {{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['name'] }} container
+    docker_image:
+      name: "{{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['image_name'] }}"
+      source: pull
+
+  - name: Running {{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['name'] }} container
+    docker_container:
+      name: "{{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['name'] }}"
+      image: "{{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['image_name'] }}"
+      interactive: yes
+      state: started
+      ports: "{{ webSiteContainers[hostvars[inventory_hostname].inventory_hostname]['ports'] }}"
+  
+  when: hostvars[inventory_hostname].inventory_hostname in webSiteContainers

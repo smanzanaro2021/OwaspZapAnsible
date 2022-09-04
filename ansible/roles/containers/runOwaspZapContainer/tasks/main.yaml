@@ -1,0 +1,25 @@
+- name: Pulling {{ owasp_zap_image_name }} container
+  docker_image:
+    name: "{{ owasp_zap_image_name }}"
+    source: pull
+
+- name: Running owasp zap container
+  docker_container:
+    name: owasp-zap
+    image: "{{ owasp_zap_image_name }}"
+    interactive: yes
+    state: started
+    user: zap
+    command: zap.sh -daemon -host 0.0.0.0 -port 8090 -config api.disablekey=true -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true
+    ports:
+      - "8090:8090"
+
+- name: Adding write permissions to reports directory
+  file:
+    path: "{{ reports_location }}"
+    state: directory
+    owner: root
+    group: root
+    recurse: yes
+    mode: 0777
+
