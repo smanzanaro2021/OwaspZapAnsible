@@ -1,0 +1,39 @@
+*********************************************************************************************************************
+*********************************************************************************************************************
+*********************************************************************************************************************
+
+INSTALACION DE OWASP ZAP/ANSIBLE
+
+Instalación del paquete obtenido en la entrega o en el github (https://github.com/smanzanaro2021/OwaspZapAnsible)
+apt update
+apt upgrade
+apt install software-properties-common  --> Necesario para añadir el repo de ansible y asi poder
+apt-add-repository ppa:ansible/ansible  --> instalar la ultima version disponible (2.9) necesitas 2.1 o superior
+apt update
+apt install ansible
+
+*********************************************************************************************************************
+*********************************************************************************************************************
+*********************************************************************************************************************
+
+CONFIGURACION DEL INTERPRETE Y FIXED DE ERRORES
+
+
+Problema con el modulo websocket-client:
+El modulo de owasp esta para python 2 y el que viene preinstalado es el 3, hay 2 soluciones:
+(RECOMENDADA)		-Cambiar interprete python de ansible a python 3  --> ansible-playbook provision.yaml -e 'ansible_python_interpreter=/usr/bin/python3'
+			-Desinstalar el paquete con pip e instalar la version necesaria --> pip uninstall websocket-client 
+										--> pip install websocket-client==0.32.0
+
+Para ejecutar ansible es necesario conexion via ssh:
+
+	*Nodo bastión:
+		- Genera tu propia clave en el servidor ssh-keygen (enter x3)
+		- Generar una copia ssh-copy-id de cada cliente contra el que se vaya a lanzar un escaner con el usuario ubuntu, ya que se cumple el 			  uso de minimos privilegios  --> ssh-copy-id ubuntu@<ip>
+	*Nodo cliente:
+		- En el cliente es necesario permitir el uso de ssh con root, sshd_config  --> /etc/ssh/sshd_config PermitRootLogin yes
+
+*********************************************************************************************************************
+*********************************************************************************************************************
+*********************************************************************************************************************
+
